@@ -1,15 +1,28 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 import { useLang } from '../i18n';
 import { scrollToId } from '../motion';
 import type { Lang } from '../content';
 
-const ITEMS = ['grid', 'stack', 'flow', 'agents', 'projects', 'log', 'contact'] as const;
+const ITEMS = [
+  { id: 'grid', it: 'home.tsx', en: 'home.tsx', c: '#f2f5ef' },
+  { id: 'about', it: 'chi-sono.md', en: 'about.md', c: '#aec1b7' },
+  { id: 'stack', it: 'stack.tsx', en: 'stack.tsx', c: '#3fd68a' },
+  { id: 'flow', it: 'esperienza.tsx', en: 'experience.tsx', c: '#ff4a36' },
+  { id: 'agents', it: 'agenti.ts', en: 'agents.ts', c: '#c79bff' },
+  { id: 'projects', it: 'progetti.tsx', en: 'projects.tsx', c: '#3b82f6' },
+  { id: 'log', it: 'percorso.md', en: 'path.md', c: '#ffb21e' },
+  { id: 'contact', it: 'contatti.ts', en: 'contact.ts', c: '#7ee2a8' },
+] as const;
+
+type NavId = (typeof ITEMS)[number]['id'];
 
 export default function Nav() {
   const { t, lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
-  const [current, setCurrent] = useState<string>('grid');
+  const [current, setCurrent] = useState<NavId>('grid');
   const [booted, setBooted] = useState(false);
+  const [bar, setBar] = useState({ left: 0, width: 0 });
+  const tabsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // The hero's code sequence types the nav into existence; the fallback covers reduced motion and late loads
@@ -30,10 +43,10 @@ export default function Nav() {
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setCurrent(e.target.id)),
+      (entries) => entries.forEach((e) => e.isIntersecting && setCurrent(e.target.id as NavId)),
       { rootMargin: '-45% 0px -50% 0px' },
     );
-    ITEMS.forEach((id) => {
+    ITEMS.forEach(({ id }) => {
       const el = document.getElementById(id);
       if (el) io.observe(el);
     });
@@ -43,6 +56,16 @@ export default function Nav() {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    const tabs = tabsRef.current;
+    const tab = tabs?.querySelector<HTMLElement>(`[data-id="${current}"]`);
+    if (!tabs || !tab) return;
+    setBar({ left: tab.offsetLeft, width: tab.offsetWidth });
+    if (tab.offsetLeft < tabs.scrollLeft || tab.offsetLeft + tab.offsetWidth > tabs.scrollLeft + tabs.clientWidth) {
+      tabs.scrollTo({ left: tab.offsetLeft - 40, behavior: 'smooth' });
+    }
+  }, [current, lang]);
+
   const go = (id: string) => (e: MouseEvent) => {
     e.preventDefault();
     scrollToId(id);
@@ -50,32 +73,47 @@ export default function Nav() {
 
   return (
     <header className={`nav${scrolled ? ' is-scrolled' : ''}${booted || scrolled ? ' is-booted' : ''}`}>
-      <a className="nav-mark" href="#grid" onClick={go('grid')} aria-label="Emanuele Manniti">
-        <svg viewBox="0 0 32 32" aria-hidden>
-          <path d="M4 22h24M10 22V10M22 22V10M10 10h12" />
-          <rect x="13" y="7" width="6" height="6" />
-        </svg>
-        <span>E. Manniti</span>
+      <span className="nav-dots" aria-hidden>
+        <i />
+        <i />
+        <i />
+      </span>
+      <a className="nav-brand" href="#grid" onClick={go('grid')}>
+        <b>~/</b>emanuele-manniti
       </a>
-      <nav aria-label="Sezioni">
-        <ul>
-          {ITEMS.map((id) => (
-            <li key={id}>
-              <a href={`#${id}`} onClick={go(id)} aria-current={current === id ? 'location' : undefined}>
-                <span className="nav-lamp" aria-hidden />
-                {t.nav[id]}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <div className="keyswitch" role="radiogroup" aria-label={t.langLabel}>
-        {(['it', 'en'] as Lang[]).map((l) => (
-          <button key={l} type="button" role="radio" aria-checked={lang === l} onClick={() => setLang(l)}>
-            {l.toUpperCase()}
-          </button>
+      <nav className="nav-tabs" ref={tabsRef} aria-label={t.nav.label}>
+        {ITEMS.map((item) => (
+          <a
+            key={item.id}
+            data-id={item.id}
+            href={`#${item.id}`}
+            className={`nav-tab${current === item.id ? ' is-on' : ''}`}
+            style={{ '--c': item.c } as CSSProperties}
+            onClick={go(item.id)}
+            aria-current={current === item.id ? 'location' : undefined}
+            title={t.nav[item.id]}
+          >
+            <span className="nav-ic" aria-hidden />
+            {item[lang]}
+            <span className="nav-x" aria-hidden>
+              ×
+            </span>
+          </a>
         ))}
-        <span className={`keyswitch-knob${lang === 'en' ? ' is-right' : ''}`} aria-hidden />
+        <span className="nav-bar" style={{ left: bar.left, width: bar.width }} aria-hidden />
+      </nav>
+      <div className="nav-lang" role="radiogroup" aria-label={t.langLabel}>
+        <span className="nav-lang-key" aria-hidden>
+          lang:
+        </span>
+        {(['it', 'en'] as Lang[]).map((l, i) => (
+          <span key={l}>
+            {i > 0 && <span className="nav-lang-sep">|</span>}
+            <button type="button" role="radio" aria-checked={lang === l} onClick={() => setLang(l)}>
+              "{l}"
+            </button>
+          </span>
+        ))}
       </div>
     </header>
   );

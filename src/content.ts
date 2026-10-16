@@ -3,8 +3,7 @@ export type Lang = 'it' | 'en';
 export const LINKS = {
   linkedin: 'https://www.linkedin.com/in/emanuele-manniti-338360183/',
   github: 'https://github.com/LaFrasta',
-  // TODO: replace with the real address before publishing
-  email: 'mailto:tuo.indirizzo@email.it',
+  email: 'mailto:mannitiemanuele@gmail.com',
 };
 
 export type SkillLayer = 'frontend' | 'backend' | 'data' | 'platform';
@@ -110,7 +109,7 @@ const LANE_TIMES = {
 };
 
 interface Copy {
-  nav: { grid: string; stack: string; flow: string; agents: string; projects: string; log: string; contact: string };
+  nav: { label: string; grid: string; about: string; stack: string; flow: string; agents: string; projects: string; log: string; contact: string };
   langLabel: string;
   hero: {
     role: string;
@@ -169,7 +168,7 @@ interface Copy {
 }
 
 const it: Copy = {
-  nav: { grid: 'Inizio', stack: 'Stack', flow: 'Esperienza', agents: 'Agenti', projects: 'Progetti', log: 'Percorso', contact: 'Contatti' },
+  nav: { label: 'Sezioni', grid: 'Inizio', about: 'Chi sono', stack: 'Stack', flow: 'Esperienza', agents: 'Agenti', projects: 'Progetti', log: 'Percorso', contact: 'Contatti' },
   langLabel: 'Lingua',
   hero: {
     role: 'Full Stack Software Engineer',
@@ -364,7 +363,7 @@ const it: Copy = {
 };
 
 const en: Copy = {
-  nav: { grid: 'Home', stack: 'Stack', flow: 'Experience', agents: 'Agents', projects: 'Projects', log: 'Path', contact: 'Contact' },
+  nav: { label: 'Sections', grid: 'Home', about: 'About', stack: 'Stack', flow: 'Experience', agents: 'Agents', projects: 'Projects', log: 'Path', contact: 'Contact' },
   langLabel: 'Language',
   hero: {
     role: 'Full Stack Software Engineer',

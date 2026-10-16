@@ -1,0 +1,90 @@
+{
+  "React.js": {
+    "file": "SkillTile.tsx",
+    "code": "export function SkillTile({ skill }: Props) {\n  const [live, setLive] = useState(false);\n  useEffect(() => setLive(true), []);\n  return <li className={live ? 'is-live' : ''}>{skill.name}</li>;\n}"
+  },
+  "Next.js": {
+    "file": "app/projects/page.tsx",
+    "code": "export default async function Page() {\n  const projects = await getProjects();\n  return <ProjectList items={projects} />;\n}"
+  },
+  "JavaScript": {
+    "file": "debounce.js",
+    "code": "const debounce = (fn, ms = 200) => {\n  let t;\n  return (...args) => {\n    clearTimeout(t);\n    t = setTimeout(() => fn(...args), ms);\n  };\n};"
+  },
+  "HTML5": {
+    "file": "index.html",
+    "code": "<section aria-labelledby=\"stack-title\">\n  <h2 id=\"stack-title\">Lo stack</h2>\n  <ul class=\"bays\"></ul>\n</section>"
+  },
+  "CSS": {
+    "file": "styles.css",
+    "code": ".bus-bar::after {\n  background: linear-gradient(90deg, transparent, var(--v), transparent);\n  animation: current 2.4s linear infinite;\n}"
+  },
+  "Redux Toolkit": {
+    "file": "api.ts",
+    "code": "export const api = createApi({\n  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),\n  endpoints: (b) => ({\n    getReports: b.query<Report[], void>({ query: () => 'reports' }),\n  }),\n});"
+  },
+  "MUI": {
+    "file": "Toolbar.tsx",
+    "code": "<Stack direction=\"row\" spacing={2}>\n  <Chip label=\"Live\" color=\"success\" />\n  <Button variant=\"contained\">Avvia</Button>\n</Stack>"
+  },
+  "Java": {
+    "file": "Reading.java",
+    "code": "public record Reading(String id, Instant at, BigDecimal value) {\n  public boolean isStale(Duration max) {\n    return at.plus(max).isBefore(Instant.now());\n  }\n}"
+  },
+  "Spring Framework": {
+    "file": "ReadingController.java",
+    "code": "@RestController\n@RequestMapping(\"/api/readings\")\nclass ReadingController {\n  @GetMapping(\"/{id}\")\n  Mono<Reading> one(@PathVariable String id) {\n    return service.findById(id);\n  }\n}"
+  },
+  "Node.js": {
+    "file": "server.ts",
+    "code": "import express from 'express';\nconst app = express();\napp.get('/health', (_req, res) => res.json({ status: 'ok' }));\napp.listen(process.env.PORT ?? 3000);"
+  },
+  "TypeScript": {
+    "file": "result.ts",
+    "code": "type Result<T> = { ok: true; value: T } | { ok: false; error: string };\n\nconst parse = (raw: string): Result<number> => {\n  const n = Number(raw);\n  return Number.isNaN(n) ? { ok: false, error: 'NaN' } : { ok: true, value: n };\n};"
+  },
+  "Express": {
+    "file": "jobs.router.ts",
+    "code": "router.post('/jobs', validate(jobSchema), async (req, res, next) => {\n  try {\n    res.status(201).json(await jobs.create(req.body));\n  } catch (err) {\n    next(err);\n  }\n});"
+  },
+  "Kafka": {
+    "file": "consumer.ts",
+    "code": "await consumer.subscribe({ topic: 'events', fromBeginning: false });\nawait consumer.run({\n  eachMessage: async ({ message }) => {\n    await handle(JSON.parse(message.value!.toString()));\n  },\n});"
+  },
+  "SQL": {
+    "file": "weekly.sql",
+    "code": "SELECT d.name, COUNT(*) AS total\nFROM orders o\nJOIN departments d ON d.id = o.dept_id\nWHERE o.created_at >= TRUNC(SYSDATE) - 7\nGROUP BY d.name\nORDER BY total DESC;"
+  },
+  "PL/SQL": {
+    "file": "process_jobs.sql",
+    "code": "BEGIN\n  FOR r IN (SELECT id FROM jobs WHERE status = 'PENDING') LOOP\n    process_job(r.id);\n  END LOOP;\n  COMMIT;\nEND;"
+  },
+  "Oracle": {
+    "file": "latest.sql",
+    "code": "SELECT *\nFROM readings\nWHERE reading_date >= :from_date\nORDER BY reading_date DESC\nFETCH FIRST 100 ROWS ONLY;"
+  },
+  "MongoDB": {
+    "file": "errors.js",
+    "code": "db.events.aggregate([\n  { $match: { severity: 'ERROR' } },\n  { $group: { _id: '$service', total: { $sum: 1 } } },\n  { $sort: { total: -1 } },\n]);"
+  },
+  "TypeORM": {
+    "file": "bulk-insert.ts",
+    "code": "for (const chunk of chunks(rows, 500)) {\n  await repo.createQueryBuilder().insert().values(chunk).execute();\n}"
+  },
+  "OpenShift": {
+    "file": "deployment.yaml",
+    "code": "livenessProbe:\n  httpGet: { path: /health, port: 3000 }\n  timeoutSeconds: 5\nresources:\n  limits: { memory: 1Gi }"
+  },
+  "Azure DevOps": {
+    "file": "azure-pipelines.yml",
+    "code": "trigger: [main]\npool: { vmImage: ubuntu-latest }\nsteps:\n  - script: npm ci && npm run build\n  - publish: dist"
+  },
+  "AI Agents": {
+    "file": "agents/investigator.md",
+    "code": "---\nname: bug-investigator\ndescription: Traccia un errore tra i servizi e propone la fix\ntools: Read, Grep, Bash\n---"
+  },
+  "Automation": {
+    "file": "jobs/daily-report.ts",
+    "code": "schedule('0 9 * * 1-5', async () => {\n  const today = await collectMetrics();\n  const diff = compare(today, await lastSnapshot());\n  await publishReport(diff);\n  await notify(diff.alerts);\n});"
+  }
+}

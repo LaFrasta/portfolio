@@ -1,6 +1,5 @@
 import { useRef, useState, type CSSProperties } from 'react';
 import { useGSAP } from '@gsap/react';
-import { AnimatePresence, motion } from 'motion/react';
 import { useLang } from '../i18n';
 import type { MilestoneKind } from '../content';
 import { reducedMotion, ScrollTrigger } from '../motion';
@@ -57,18 +56,9 @@ export default function Logbook() {
       <div className="path-grid">
         <div className="path-year" aria-hidden style={{ '--k': KIND_COLOR[current.kind] } as CSSProperties}>
           <div className="path-year-window">
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={current.year}
-                className="path-year-num"
-                initial={{ y: '100%', opacity: 0 }}
-                animate={{ y: '0%', opacity: 1 }}
-                exit={{ y: '-100%', opacity: 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {current.year}
-              </motion.span>
-            </AnimatePresence>
+            <span key={active} className="path-year-num">
+              {current.year}
+            </span>
           </div>
           <p className="path-year-kind mono">{current.kind === 'now' ? current.title : t.log.kinds[current.kind]}</p>
         </div>

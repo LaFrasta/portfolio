@@ -270,11 +270,11 @@ ol {
   z-index: 2;
   left: var(--gutter);
   bottom: clamp(32px, 9vh, 96px);
-  max-width: min(44vw, 860px);
+  max-width: 48vw;
 }
 
 .hero-name {
-  font-size: clamp(3rem, 7.6vw, 6rem);
+  font-size: clamp(2.6rem, 5.2vw, 6rem);
   font-weight: 840;
   font-stretch: 125%;
   line-height: 0.86;
@@ -392,7 +392,7 @@ ol {
   z-index: 3;
   right: var(--gutter);
   top: 53%;
-  width: min(1120px, 54vw);
+  width: min(860px, 44vw);
   transform: translateY(-50%);
   border: 2px solid #34443e;
   border-radius: 12px;
@@ -448,7 +448,7 @@ ol {
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr) 70px;
   font-family: var(--mono);
-  font-size: clamp(0.85rem, 1.3vw, 1.3rem);
+  font-size: clamp(0.78rem, 0.95vw, 1.05rem);
   line-height: 1.75;
 }
 
@@ -2493,6 +2493,14 @@ ol {
   color: transparent;
   -webkit-text-stroke: 2px var(--k);
   transition: -webkit-text-stroke-color 0.5s var(--ease-out);
+  animation: year-in 0.6s var(--ease-out);
+}
+
+@keyframes year-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
 }
 
 .path-year-kind {
